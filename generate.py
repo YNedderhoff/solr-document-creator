@@ -2,6 +2,7 @@ import random
 import time
 from solr import Solr
 
+
 ONE_BILLION = 1000000000
 HUNDRED_MILLION = 100000000
 TEN_MILLION = 10000000
@@ -12,12 +13,12 @@ TEN = 10
 
 NUMBER_OF_DOCS = ONE_MILLION
 
+NUMBER_OF_CHUNKS = 1000
 SOLR_URL = "http://localhost:8983/solr/"
 SOLR_CORE = "payloads"
 ID_KEY = "id"
 CLASSIFICATIONS_KEY = "classifications_dpf"
 AWESOME_NUMBER_KEY = "awesome_number"
-keys = [ID_KEY, CLASSIFICATIONS_KEY]
 
 classes = [
     "first_classifier:class_one",
@@ -50,8 +51,8 @@ def get_chunk_time_log(chunk_size, chunk_start_time, local_time, start_time):
 
 def chunk_ready(chunk_size):
     return chunk_size != 0 and (chunk_size == NUMBER_OF_DOCS
-                                or (NUMBER_OF_DOCS / 100 < 100 and chunk_size % 100 == 0)
-                                or (chunk_size % (NUMBER_OF_DOCS / 100) == 0))
+                                or (NUMBER_OF_DOCS / NUMBER_OF_CHUNKS < NUMBER_OF_CHUNKS and chunk_size % NUMBER_OF_CHUNKS == 0)
+                                or (chunk_size % (NUMBER_OF_DOCS / NUMBER_OF_CHUNKS) == 0))
 
 
 def process_chunk(chunk_size, docs, chunk_start_time, start_time):
