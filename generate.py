@@ -2,7 +2,6 @@ import random
 import time
 from solrcloudpy.connection import SolrConnection
 
-
 ONE_BILLION = 1000000000
 HUNDRED_MILLION = 100000000
 TEN_MILLION = 10000000
@@ -11,7 +10,7 @@ HUNDRED_THOUSAND = 100000
 ONE_THOUSAND = 1000
 TEN = 10
 
-NUMBER_OF_DOCS = ONE_MILLION
+NUMBER_OF_DOCS = ONE_BILLION
 
 NUMBER_OF_CHUNKS = 1000
 COLLECTION_NAME = "payloads"
@@ -20,6 +19,8 @@ SOLR_CORE = "payloads"
 ID_KEY = "id"
 CLASSIFICATIONS_KEY = "classifications_dpf"
 AWESOME_NUMBER_KEY = "awesome_number"
+AWESOME_STRING_KEY = "awesome_string"
+AWESOME_MULTI_FIELD_KEY = "awesome_multi_field"
 
 classes = [
     "first_classifier:class_one",
@@ -30,6 +31,8 @@ classes = [
     "second_classifier:class_two"
 ]
 
+NUMBER_OF_CLASSES = len(classes)
+
 conn = SolrConnection(["localhost:8983"], version="7.2.1")
 
 
@@ -37,6 +40,8 @@ def create_doc(j):
     return {
         ID_KEY: "document.{0}".format(str(j)),
         CLASSIFICATIONS_KEY: list(("{0}|{1}".format(str(j), str(round(random.uniform(0, 1), 2))) for j in classes)),
+        AWESOME_MULTI_FIELD_KEY: random.sample(classes, 3),
+        AWESOME_STRING_KEY: classes[random.randint(0, NUMBER_OF_CLASSES - 1)],
         AWESOME_NUMBER_KEY: round(random.uniform(0, 1), 2)
     }
 
