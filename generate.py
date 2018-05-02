@@ -1,6 +1,6 @@
 import random
 import time
-from solr import Solr
+from solrcloudpy.connection import SolrConnection
 
 
 ONE_BILLION = 1000000000
@@ -14,6 +14,7 @@ TEN = 10
 NUMBER_OF_DOCS = ONE_MILLION
 
 NUMBER_OF_CHUNKS = 1000
+COLLECTION_NAME = "payloads"
 SOLR_URL = "http://localhost:8983/solr/"
 SOLR_CORE = "payloads"
 ID_KEY = "id"
@@ -29,7 +30,7 @@ classes = [
     "second_classifier:class_two"
 ]
 
-solr = Solr("{0}{1}".format(SOLR_URL, SOLR_CORE))
+conn = SolrConnection(["localhost:8983"], version="7.2.1")
 
 
 def create_doc(j):
@@ -41,7 +42,8 @@ def create_doc(j):
 
 
 def add_to_solr(docs):
-    solr.add_many(docs, commit=True)
+    conn[COLLECTION_NAME].add(docs)
+    conn[COLLECTION_NAME].commit()
 
 
 def get_chunk_time_log(chunk_size, chunk_start_time, local_time, start_time):
@@ -51,7 +53,8 @@ def get_chunk_time_log(chunk_size, chunk_start_time, local_time, start_time):
 
 def chunk_ready(chunk_size):
     return chunk_size != 0 and (chunk_size == NUMBER_OF_DOCS
-                                or (NUMBER_OF_DOCS / NUMBER_OF_CHUNKS < NUMBER_OF_CHUNKS and chunk_size % NUMBER_OF_CHUNKS == 0)
+                                or (
+                                        NUMBER_OF_DOCS / NUMBER_OF_CHUNKS < NUMBER_OF_CHUNKS and chunk_size % NUMBER_OF_CHUNKS == 0)
                                 or (chunk_size % (NUMBER_OF_DOCS / NUMBER_OF_CHUNKS) == 0))
 
 
