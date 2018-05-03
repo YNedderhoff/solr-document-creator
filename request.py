@@ -11,6 +11,7 @@ QUERY_ALL = "q=*:*"
 QUERY_PAYLOAD_ABOVE_THRESHOLD = "q={!frange%20l=0.7}payload(classifications_dpf,first_classifier:class_one)"
 QUERY_AWESOME_NUMBER_ABOVE_THRESHOLD = "q=awesome_number:%5B0.7+TO+1.0%5D"
 QUERY_BY_AWESOME_MULTI_FIELD = "q=awesome_multi_field:%22first_classifier:class_three%22"
+QUERY_BY_CLASSIFICATIONS_FIELD = "q=classifications_dpf:%22first_classifier:class_three%22"
 FL_SINGLE_FIELD = "fl=id,class_one:payload(classifications_dpf,first_classifier:class_one)"
 SORT_BY_AWESOME_STRING = "sort=awesome_string+desc"
 SORT_BY_AWESOME_NUMBER = "sort=awesome_string+desc"
@@ -29,6 +30,7 @@ non_payload_queries = [
 ]
 
 payload_queries = [
+    "{0}&{1}&{2}".format(QUERY_BY_CLASSIFICATIONS_FIELD, RESPONSE_FORMAT, INDENT_ON),
     "{0}&{1}&{2}".format(QUERY_PAYLOAD_ABOVE_THRESHOLD, RESPONSE_FORMAT, INDENT_ON),
     "{0}&{1}&{2}&{3}".format(QUERY_PAYLOAD_ABOVE_THRESHOLD, FL_SINGLE_FIELD, RESPONSE_FORMAT, INDENT_ON),
     "{0}&{1}&{2}&{3}".format(QUERY_ALL, SORT_BY_ONE_PAYLOAD, RESPONSE_FORMAT, INDENT_ON),

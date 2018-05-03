@@ -37,10 +37,12 @@ conn = SolrConnection(["localhost:8983"], version="7.2.1")
 
 
 def create_doc(j):
+    random_three_classes = random.sample(classes, 3)
     return {
         ID_KEY: "document.{0}".format(str(j)),
-        CLASSIFICATIONS_KEY: list(("{0}|{1}".format(str(j), str(round(random.uniform(0, 1), 2))) for j in classes)),
-        AWESOME_MULTI_FIELD_KEY: random.sample(classes, 3),
+        CLASSIFICATIONS_KEY: list(
+            ("{0}|{1}".format(str(j), str(round(random.uniform(0, 1), 2))) for j in random_three_classes)),
+        AWESOME_MULTI_FIELD_KEY: random_three_classes,
         AWESOME_STRING_KEY: classes[random.randint(0, NUMBER_OF_CLASSES - 1)],
         AWESOME_NUMBER_KEY: round(random.uniform(0, 1), 2)
     }
