@@ -29,8 +29,11 @@ non_payload_queries = [
 ]
 
 payload_queries = [
+    "{0}&{1}&{2}".format(QUERY_PAYLOAD_ABOVE_THRESHOLD, RESPONSE_FORMAT, INDENT_ON),
+    "{0}&{1}&{2}&{3}".format(QUERY_PAYLOAD_ABOVE_THRESHOLD, FL_SINGLE_FIELD, RESPONSE_FORMAT, INDENT_ON),
     "{0}&{1}&{2}&{3}".format(QUERY_ALL, SORT_BY_ONE_PAYLOAD, RESPONSE_FORMAT, INDENT_ON),
     "{0}&{1}&{2}&{3}".format(QUERY_ALL, SORT_BY_TWO_PAYLOADS, RESPONSE_FORMAT, INDENT_ON),
+    "{0}&{1}&{2}&{3}".format(QUERY_PAYLOAD_ABOVE_THRESHOLD, SORT_BY_ONE_PAYLOAD, RESPONSE_FORMAT, INDENT_ON),
     "{0}&{1}&{2}&{3}".format(QUERY_PAYLOAD_ABOVE_THRESHOLD, SORT_BY_TWO_PAYLOADS, RESPONSE_FORMAT, INDENT_ON),
     "{0}&{1}&{2}&{3}&{4}".format(QUERY_ALL, SORT_BY_TWO_PAYLOADS, FL_SINGLE_FIELD, RESPONSE_FORMAT, INDENT_ON),
     "{0}&{1}&{2}&{3}&{4}".format(QUERY_PAYLOAD_ABOVE_THRESHOLD, SORT_BY_TWO_PAYLOADS, FL_SINGLE_FIELD, RESPONSE_FORMAT,
@@ -38,7 +41,7 @@ payload_queries = [
 ]
 
 
-def measure(query):
+def measure(query, f):
     successful_queries = 0
     non_successful_queries = 0
     sum_of_times = 0.0
@@ -56,18 +59,20 @@ def measure(query):
         else:
             non_successful_queries += 1
     print("{0} ({1} successful, {2} non-successful)\n".format(query, successful_queries, non_successful_queries))
-    print(
+    f.write("{0} ({1} successful, {2} non-successful)\n".format(query, successful_queries, non_successful_queries))
+    f.write(
         "\t{0}\tseconds (first)\n\t{1}\tseconds (average)\n".format(first_time, sum_of_times / EXECUTIONS_PER_QUERY))
 
 
 def run():
-    print("Calculating the average execution times of {0} requests per query\n".format(EXECUTIONS_PER_QUERY))
-    print("##### non-payload queries #####\n")
-    for query in non_payload_queries:
-        measure(query)
-    print("\n##### payload queries #####\n")
-    for query in payload_queries:
-        measure(query)
+    with open('outfile', 'a') as f:
+        f.write("Calculating the average execution times of {0} requests per query\n".format(EXECUTIONS_PER_QUERY))
+        f.write("##### non-payload queries #####\n")
+        for query in non_payload_queries:
+            measure(query, f)
+        f.write("\n##### payload queries #####\n")
+        for query in payload_queries:
+            measure(query, f)
 
 
 if __name__ == '__main__':
