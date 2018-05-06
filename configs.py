@@ -1,0 +1,8 @@
+from modules.helpers.numbers import TEN_THOUSAND, ONE_BILLION
+
+NUMBER_OF_DOCS = ONE_BILLION
+NUMBER_OF_CHUNKS = TEN_THOUSAND
+SOLR_HOST = "localhost"
+SOLR_PORT = "8983"
+SOLR_COLLECTION = "payloads"
+SOLR_DOMAIN = "{0}:{1}".format(SOLR_HOST, SOLR_PORT)
