@@ -9,6 +9,14 @@ EXECUTIONS_PER_QUERY = 10
 OUTFILE_MESSAGE = "Calculating the average execution times of {0} requests per query\n".format(EXECUTIONS_PER_QUERY)
 
 
+# Explore using first (special short circuit, see presentation)
+# Explore using not DelimitedPayloadTokenFilter but instead NumericPayloadTokenFilter as per the presentation
+# https://www.slideshare.net/erikhatcher/solr-payloads
+
+# https://lucene.apache.org/solr/guide/7_2/function-queries.html#payload-function
+# A special first function can be used instead of the others, to short-circuit term enumeration and return only the decoded payload of the first term.
+
+
 def measure(query, number_of_executions, f):
     successful_queries = 0
     non_successful_queries = 0
